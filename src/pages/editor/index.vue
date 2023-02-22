@@ -50,6 +50,22 @@ const onDragStart = (e: Konva.KonvaEventObject<DragEvent>) => {
 const onDragEnd = (e: Konva.KonvaEventObject<DragEvent>) => {
   dragItemId.value = null
 }
+
+const stage = ref<Konva.Stage | null>(null)
+
+const encondedCanvasImage = ref<string | null>(null)
+
+const onSaveImage = () => {
+  console.log(stage.value?.getStage())
+  stage.value?.getStage().toDataURL({
+    mimeType: 'image/jpeg',
+    quality: 0.8,
+    callback: (dataUrl) => {
+      encondedCanvasImage.value = dataUrl
+      console.log(dataUrl)
+    },
+  })
+}
 </script>
 
 <template>
@@ -59,9 +75,20 @@ const onDragEnd = (e: Konva.KonvaEventObject<DragEvent>) => {
         <div>Canvera Editor</div>
       </div>
 
+      <div class="flex justify-center">
+        <button
+          type="button"
+          class="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          @click="onSaveImage"
+        >
+          Save Image
+        </button>
+      </div>
+
       <div class="flex items-center justify-center">
         <div class="rounded-xl outline outline-8 outline-offset-0 outline-blue-500">
           <v-stage
+            ref="stage"
             :config="configKonva"
             @dragstart="onDragStart"
             @dragend="onDragEnd"
@@ -92,6 +119,15 @@ const onDragEnd = (e: Konva.KonvaEventObject<DragEvent>) => {
               />
             </v-layer>
           </v-stage>
+        </div>
+      </div>
+
+      <div v-if="encondedCanvasImage" class="flex flex-col gap-2 items-center">
+        <div class="text-lg">
+          Rendered Image
+        </div>
+        <div>
+          <img :src="encondedCanvasImage" alt="Encoded Canvas Image">
         </div>
       </div>
 
