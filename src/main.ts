@@ -4,6 +4,7 @@ import Previewer from 'virtual:vue-component-preview'
 import App from './App.vue'
 import type { UserModule } from './types'
 import generatedRoutes from '~pages'
+import VueKonva from 'vue-konva';
 
 import '@unocss/reset/tailwind.css'
 import './styles/main.css'
@@ -20,5 +21,6 @@ export const createApp = ViteSSG(
     Object.values(import.meta.glob<{ install: UserModule }>('./modules/*.ts', { eager: true }))
       .forEach(i => i.install?.(ctx))
     ctx.app.use(Previewer)
+    ctx.app.use(VueKonva)
   },
 )
