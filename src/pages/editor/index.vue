@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type Konva from 'konva'
 
+import { useFirestore } from 'vuefire'
+import { doc, updateDoc } from 'firebase/firestore'
+
 defineOptions({
   name: 'EditorPage',
 })
@@ -70,9 +73,45 @@ const onSaveImage = () => {
 const textModel = ref('')
 const texts = ref<string[]>([])
 
-const addTextToCanvas = () => {
+const db = useFirestore()
+
+const addTextToCanvas = async () => {
   texts.value.push(textModel.value)
+
+  const document = doc(db, 'todos', 'luna').withConverter({
+    toFirestore: (todo: any) => {
+      return {
+        text: todo.text,
+      }
+    },
+    fromFirestore: (snapshot, options) => {
+      const data = snapshot.data(options)
+      return new Todo(data.text)
+    },
+  })
+
+  try {
+    await updateDoc(document, {
+      text: textModel.value,
+    })
+  }
+  catch (e) {
+    console.error('Error updating document: ', e)
+  }
+
   textModel.value = ''
+}
+
+class Todo {
+  text: string
+
+  constructor(text: string) {
+    this.text = text
+  }
+
+  toString() {
+    return `${this.text}`
+  }
 }
 </script>
 
