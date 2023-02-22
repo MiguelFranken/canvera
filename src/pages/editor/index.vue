@@ -2,6 +2,7 @@
 import { useFirestore } from 'vuefire'
 import { doc, updateDoc } from 'firebase/firestore'
 import { useCanvasStore } from '~/stores/canvas'
+import Toolbar from '~/components/editor/Toolbar.vue'
 
 defineOptions({
   name: 'EditorPage',
@@ -99,8 +100,9 @@ class Todo {
         </div>
       </div>
 
-      <div class="flex items-center justify-center">
+      <div class="space-y-16">
         <Editor />
+        <Toolbar />
       </div>
 
       <div class="flex justify-center">
