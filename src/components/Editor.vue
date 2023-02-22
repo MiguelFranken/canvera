@@ -3,8 +3,8 @@ import type Konva from 'konva'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '~/stores/canvas'
 
-const width = 500
-const height = 500
+const width = window.innerWidth
+const height = width
 
 const configKonva = ref({
   width,
