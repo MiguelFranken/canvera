@@ -100,9 +100,7 @@ class Todo {
       </div>
 
       <div class="flex items-center justify-center">
-        <div class="rounded-xl outline outline-8 outline-offset-0 outline-blue-500">
-          <Editor />
-        </div>
+        <Editor />
       </div>
 
       <div class="flex justify-center">
