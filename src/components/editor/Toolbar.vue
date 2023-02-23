@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useCanvasStore } from '~/stores/canvas'
+
 interface Color {
   code: string
 }
@@ -14,6 +16,20 @@ const colors: Color[] = [
     code: 'blue',
   },
 ]
+
+const { setPencilMode, resetCanvas } = useCanvasStore()
+
+function handlePencilClick() {
+  setPencilMode('brush')
+}
+
+function handleEraserClick() {
+  setPencilMode('eraser')
+}
+
+function handleResetClick() {
+  resetCanvas()
+}
 </script>
 
 <template>
@@ -22,18 +38,21 @@ const colors: Color[] = [
       <button
         type="button"
         class="inline-flex items-center rounded-full border border-transparent bg-indigo-600 p-3 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        @click="handlePencilClick"
       >
         <div class="h-8 w-8 i-ph-pencil-fill" aria-hidden="true" />
       </button>
       <button
         type="button"
         class="inline-flex items-center rounded-full border border-transparent bg-indigo-600 p-3 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        @click="handleEraserClick"
       >
         <div class="h-8 w-8 i-ph-eraser-fill" aria-hidden="true" />
       </button>
       <button
         type="button"
         class="inline-flex items-center rounded-full border border-transparent bg-indigo-600 p-3 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        @click="handleResetClick"
       >
         <div class="h-8 w-8 i-ph-trash" aria-hidden="true" />
       </button>

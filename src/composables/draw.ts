@@ -5,9 +5,8 @@ import type { ComputedRef, Ref } from 'vue'
 export const useDraw = (layer: ComputedRef<Konva.Layer | null>, scale: Ref<number>) => {
   const isPaint = ref(false)
   const lastLine = ref<Konva.Line | null>(null)
-  const mode = ref('brush')
 
-  const { stage } = storeToRefs(useCanvasStore())
+  const { stage, mode } = storeToRefs(useCanvasStore())
 
   function handleMouseDown() {
     isPaint.value = true
