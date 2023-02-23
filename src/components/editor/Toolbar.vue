@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useCanvasStore } from '~/stores/canvas'
+import ToolbarButton from '~/components/patterns/button/ToolbarButton.vue'
 
 interface Color {
   code: string
@@ -35,27 +36,9 @@ function handleResetClick() {
 <template>
   <div class="space-y-4">
     <div class="flex gap-4">
-      <button
-        type="button"
-        class="inline-flex items-center rounded-full border border-transparent bg-indigo-600 p-3 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        @click="handlePencilClick"
-      >
-        <div class="h-8 w-8 i-ph-pencil-fill" aria-hidden="true" />
-      </button>
-      <button
-        type="button"
-        class="inline-flex items-center rounded-full border border-transparent bg-indigo-600 p-3 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        @click="handleEraserClick"
-      >
-        <div class="h-8 w-8 i-ph-eraser-fill" aria-hidden="true" />
-      </button>
-      <button
-        type="button"
-        class="inline-flex items-center rounded-full border border-transparent bg-indigo-600 p-3 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        @click="handleResetClick"
-      >
-        <div class="h-8 w-8 i-ph-trash" aria-hidden="true" />
-      </button>
+      <ToolbarButton icon="i-ph-pencil-fill" @click="handlePencilClick" />
+      <ToolbarButton icon="i-ph-eraser-fill" @click="handleEraserClick" />
+      <ToolbarButton icon="i-ph-trash" @click="handleResetClick" />
     </div>
     <div v-if="false" class="flex gap-8 justify-center">
       <div
