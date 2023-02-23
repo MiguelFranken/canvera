@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import Konva from 'konva'
 import { useCanvasStore } from '~/stores/canvas'
 import { useStars } from '~/composables/stars'
-import type { VueKonvaStage } from '~/types'
+import type { VueKonvaLayer, VueKonvaStage } from '~/types'
 
 const sceneWidth = 1000
 const sceneHeight = sceneWidth
@@ -21,7 +22,7 @@ onMounted(() => {
 
 const container = ref<HTMLElement | null>(null)
 
-useFitStage(container, sceneWidth)
+const { scale } = toRefs(useFitStage(container, sceneWidth))
 
 const stars = useStars(sceneWidth, sceneHeight)
 const { list, dragItemId } = toRefs(stars)
@@ -31,22 +32,55 @@ const stage = computed(() => stageRef.value?.getNode())
 
 const { texts } = storeToRefs(useCanvasStore())
 
-const position = ref({ x: 0, y: 0 })
+const isPaint = ref(false)
+const lastLine = ref<Konva.Line | null>(null)
+const mode = ref('brush')
 
-function handleMouseMove() {
-  const mousePos = stage.value?.getRelativePointerPosition()
-  if (mousePos) {
-    const x = mousePos.x - 190
-    const y = mousePos.y - 40
-    position.value = { x, y }
+const layerRef = ref<VueKonvaLayer | null>(null)
+const layer = computed(() => layerRef.value?.getNode())
+
+function handleMouseDown() {
+  isPaint.value = true
+  const pos = stage.value?.getPointerPosition()
+
+  if (pos) {
+    const line = new Konva.Line({
+      stroke: '#df4b26',
+      strokeWidth: 5,
+      globalCompositeOperation:
+        mode.value === 'brush' ? 'source-over' : 'destination-out',
+      // round cap for smoother lines
+      lineCap: 'round',
+      lineJoin: 'round',
+      // add point twice, so we have some drawings even on a simple click
+      points: [pos.x * scale.value, pos.y * scale.value, pos.x * scale.value, pos.y * scale.value],
+    })
+    lastLine.value = line
+    layer.value?.add(line)
   }
+}
+
+function handleMouseMove(e: Konva.KonvaEventObject<MouseEvent>) {
+  if (!isPaint.value)
+    return
+
+  // prevent scrolling on touch devices
+  e.evt.preventDefault()
+
+  const pos = stage.value?.getPointerPosition()
+  if (pos) {
+    const newPoints = lastLine.value?.points().concat([pos.x * scale.value, pos.y * scale.value])
+    if (newPoints)
+      lastLine.value?.points(newPoints)
+  }
+}
+
+function handleMouseUp() {
+  isPaint.value = false
 }
 </script>
 
 <template>
-  <div class="text-center">
-    {{ position }}
-  </div>
   <div ref="container" class="outline outline-8 outline-offset-0 outline-blue-500 m-16">
     <v-stage
       ref="stageRef"
@@ -54,8 +88,10 @@ function handleMouseMove() {
       @dragstart="onDragStart"
       @dragend="onDragEnd"
       @mousemove="handleMouseMove"
+      @mousedown="handleMouseDown"
+      @mouseup="handleMouseUp"
     >
-      <v-layer>
+      <v-layer ref="layerRef">
         <template v-if="false">
           <v-star
             v-for="item in list"

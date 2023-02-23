@@ -5,18 +5,19 @@ import { useCanvasStore } from '~/stores/canvas'
 export const useFitStage = (container: Ref<HTMLElement | null>, sceneWidth: number) => {
   const { stage } = storeToRefs(useCanvasStore())
 
+  // we need to fit stage into parent container
+  const containerWidth = ref(container.value?.offsetWidth ?? 0)
+
+  const scale = computed(() => containerWidth.value / sceneWidth)
+  const scaleInverted = computed(() => 1 / scale.value)
+
   function fitStageIntoParentContainer() {
+    containerWidth.value = container.value?.offsetWidth ?? 0
+
     if (container.value && stage.value) {
-      // we need to fit stage into parent container
-      const containerWidth = container.value.offsetWidth
-
-      // we make the full scene visible,
-      // so we need to scale all objects on canvas
-      const scale = containerWidth / sceneWidth
-
-      stage.value.width(sceneWidth * scale)
-      stage.value.height(sceneWidth * scale)
-      stage.value.scale({ x: scale, y: scale })
+      stage.value.width(sceneWidth * scale.value)
+      stage.value.height(sceneWidth * scale.value)
+      stage.value.scale({ x: scale.value, y: scale.value })
     }
   }
 
@@ -27,5 +28,7 @@ export const useFitStage = (container: Ref<HTMLElement | null>, sceneWidth: numb
 
   useEventListener(window, 'resize', fitStageIntoParentContainer)
 
-  return {}
+  return {
+    scale: scaleInverted,
+  }
 }

@@ -6,3 +6,7 @@ export type UserModule = (ctx: ViteSSGContext) => void
 export interface VueKonvaStage {
   getNode(): Konva.Stage
 }
+
+export interface VueKonvaLayer {
+  getNode(): Konva.Layer
+}
