@@ -5,6 +5,7 @@ specifiers:
   '@headlessui/vue': ^1.7.10
   '@heroicons/vue': ^2.0.16
   '@iconify-json/carbon': ^1.1.13
+  '@iconify-json/ph': ^1.1.4
   '@intlify/unplugin-vue-i18n': ^0.8.1
   '@types/markdown-it-link-attributes': ^3.0.1
   '@types/nprogress': ^0.2.0
@@ -73,6 +74,7 @@ dependencies:
 devDependencies:
   '@antfu/eslint-config': 0.34.1_7uibuqfxkfaozanbtbziikiqje
   '@iconify-json/carbon': 1.1.13
+  '@iconify-json/ph': 1.1.4
   '@intlify/unplugin-vue-i18n': 0.8.1_vue-i18n@9.2.2
   '@types/markdown-it-link-attributes': 3.0.1
   '@types/nprogress': 0.2.0
@@ -2259,6 +2261,12 @@ packages:
 
   /@iconify-json/carbon/1.1.13:
     resolution: {integrity: sha512-qPR7n3JkCqIrvjxnyUPIejhn0wrZJsLmija59U/zwFm5SMOITCfLx+Jp6VecnL0Sm76zRE5Kv54VzolQljB97A==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
+
+  /@iconify-json/ph/1.1.4:
+    resolution: {integrity: sha512-2A3+G/bvYB+ab1QL4SIsXVECvjSkSg+smNdWAg30QlksyZ1bI7Zh3wzyZCA2saDJPkVGyMJHSLI5EXExk/jmnQ==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: true

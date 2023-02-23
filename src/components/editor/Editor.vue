@@ -38,7 +38,7 @@ const { handleMouseMove, handleMouseUp, handleMouseDown } = useDraw(layer, scale
 </script>
 
 <template>
-  <div ref="container" class="outline outline-4 outline-offset-0 outline-indigo-600 m-8">
+  <div ref="container" class="outline outline-4 outline-offset-0 outline-indigo-600">
     <v-stage
       ref="stageRef"
       :config="configKonva"

@@ -97,7 +97,7 @@ class Todo {
         </div>
       </template>
 
-      <div class="space-y-16">
+      <div class="space-y-8 m-8">
         <Editor />
         <Toolbar />
       </div>
