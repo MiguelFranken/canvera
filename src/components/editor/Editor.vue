@@ -5,7 +5,7 @@ import { useCanvasStore } from '~/stores/canvas'
 import { useStars } from '~/composables/stars'
 import type { VueKonvaLayer, VueKonvaStage } from '~/types'
 
-const sceneWidth = 1000
+const sceneWidth = 1500
 const sceneHeight = sceneWidth
 
 // initialize canvas store
@@ -46,7 +46,7 @@ function handleMouseDown() {
   if (pos) {
     const line = new Konva.Line({
       stroke: '#df4b26',
-      strokeWidth: 5,
+      strokeWidth: 30,
       globalCompositeOperation:
         mode.value === 'brush' ? 'source-over' : 'destination-out',
       // round cap for smoother lines
