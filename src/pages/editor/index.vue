@@ -69,35 +69,37 @@ class Todo {
   <div>
     <div class="flex flex-col gap-16">
       <div class="text-4xl text-center">
-        <div>Canvera Editor</div>
+        <div>Canvera</div>
       </div>
 
-      <div class="flex justify-center">
-        <div class="w-128 text-center">
-          <!-- Input Field -->
-          <div>
-            <label for="about" class="block text-sm font-medium text-gray-700 text-left text-lg">About</label>
-            <div class="mt-1">
-              <textarea
-                id="about"
-                v-model="textModel"
-                name="about"
-                rows="3"
-                class="block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-md"
-              />
+      <template v-if="false">
+        <div class="flex justify-center">
+          <div class="w-128 text-center">
+            <!-- Input Field -->
+            <div>
+              <label for="about" class="block text-sm font-medium text-gray-700 text-left text-lg">About</label>
+              <div class="mt-1">
+                <textarea
+                  id="about"
+                  v-model="textModel"
+                  name="about"
+                  rows="3"
+                  class="block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-md"
+                />
+              </div>
+              <p class="mt-2 text-sm text-gray-500 text-left">
+                Write a few sentences for your friend.
+              </p>
             </div>
-            <p class="mt-2 text-sm text-gray-500 text-left">
-              Write a few sentences for your friend.
-            </p>
-          </div>
 
-          <div class="flex justify-end">
-            <Button @click="addTextToCanvas">
-              Add text to canvas
-            </Button>
+            <div class="flex justify-end">
+              <Button @click="addTextToCanvas">
+                Add text to canvas
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      </template>
 
       <div class="space-y-16">
         <Editor />

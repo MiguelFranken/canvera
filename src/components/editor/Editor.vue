@@ -81,7 +81,7 @@ function handleMouseUp() {
 </script>
 
 <template>
-  <div ref="container" class="outline outline-8 outline-offset-0 outline-blue-500 m-16">
+  <div ref="container" class="outline outline-4 outline-offset-0 outline-indigo-600 m-8">
     <v-stage
       ref="stageRef"
       :config="configKonva"
