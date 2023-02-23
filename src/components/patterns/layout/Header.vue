@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {
   Dialog,
   DialogPanel,
@@ -20,6 +20,12 @@ import {
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/vue/20/solid'
+
+interface Props {
+  title?: string
+}
+
+const props = defineProps<Props>()
 
 const { t } = useI18n()
 
@@ -47,12 +53,18 @@ const mobileMenuOpen = ref(false)
           <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
         </RouterLink>
       </div>
+
+      <div v-if="props.title" class="lg:hidden text-md font-semibold leading-6 text-gray-900">
+        {{ props.title }}
+      </div>
+
       <div class="flex lg:hidden">
         <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = true">
           <span class="sr-only">Open main menu</span>
           <Bars3Icon class="h-6 w-6" aria-hidden="true" />
         </button>
       </div>
+
       <PopoverGroup class="hidden lg:flex lg:gap-x-12">
         <Popover class="relative">
           <PopoverButton class="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
@@ -92,6 +104,7 @@ const mobileMenuOpen = ref(false)
         <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Marketplace</a>
         <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Company</a>
       </PopoverGroup>
+
       <div class="hidden lg:flex lg:flex-1 lg:justify-end">
         <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
       </div>

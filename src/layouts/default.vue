@@ -1,5 +1,9 @@
+<script setup lang="ts">
+const title = computed(() => useRouter().currentRoute.value.meta.title)
+</script>
+
 <template>
-  <Header />
+  <Header :title="title" />
 
   <main>
     <RouterView />

@@ -68,10 +68,6 @@ class Todo {
 <template>
   <div>
     <div class="flex flex-col gap-16">
-      <div class="text-4xl text-center">
-        <div>Canvera</div>
-      </div>
-
       <template v-if="false">
         <div class="flex justify-center">
           <div class="w-128 text-center">
@@ -132,3 +128,9 @@ class Todo {
     </div>
   </div>
 </template>
+
+<route lang="yaml">
+meta:
+  layout: default
+  title: Editor
+</route>

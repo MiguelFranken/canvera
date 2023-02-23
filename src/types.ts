@@ -10,3 +10,9 @@ export interface VueKonvaStage {
 export interface VueKonvaLayer {
   getNode(): Konva.Layer
 }
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    title?: string
+  }
+}
