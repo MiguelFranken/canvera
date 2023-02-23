@@ -2,6 +2,8 @@ lockfileVersion: 5.4
 
 specifiers:
   '@antfu/eslint-config': ^0.34.1
+  '@headlessui/vue': ^1.7.10
+  '@heroicons/vue': ^2.0.16
   '@iconify-json/carbon': ^1.1.13
   '@intlify/unplugin-vue-i18n': ^0.8.1
   '@types/markdown-it-link-attributes': ^3.0.1
@@ -52,6 +54,8 @@ specifiers:
   vuefire: ^3.0.1
 
 dependencies:
+  '@headlessui/vue': 1.7.10_vue@3.2.45
+  '@heroicons/vue': 2.0.16_vue@3.2.45
   '@unocss/reset': 0.48.4
   '@vueuse/core': 9.11.0_vue@3.2.45
   '@vueuse/head': 1.0.22_vue@3.2.45
@@ -2214,6 +2218,23 @@ packages:
       long: 4.0.0
       protobufjs: 7.2.2
       yargs: 16.2.0
+    dev: false
+
+  /@headlessui/vue/1.7.10_vue@3.2.45:
+    resolution: {integrity: sha512-qAov7JULOBBes5CU+MiGpwMKoXxLHXS703WEZkOPxYjPD2p7f286ozlFxw7JjA2MmVgbnis2Wvgg/4hT7nRFIg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      vue: 3.2.45
+    dev: false
+
+  /@heroicons/vue/2.0.16_vue@3.2.45:
+    resolution: {integrity: sha512-saVAExLlGu6epqmS543qeWd/UOJUxpTJyK9aXeFGqS3VIW8X7yyJQmUGT40A38gBEAxMOdTdH9jFSh8sjPFM7A==}
+    peerDependencies:
+      vue: '>= 3'
+    dependencies:
+      vue: 3.2.45
     dev: false
 
   /@humanwhocodes/config-array/0.11.8:
