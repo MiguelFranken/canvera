@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '~/stores/canvas'
 import ToolbarButton from '~/components/patterns/button/ToolbarButton.vue'
 
@@ -19,6 +20,7 @@ const colors: Color[] = [
 ]
 
 const { setPencilMode, resetCanvas } = useCanvasStore()
+const { mode } = storeToRefs(useCanvasStore())
 
 function handlePencilClick() {
   setPencilMode('brush')
@@ -36,8 +38,8 @@ function handleResetClick() {
 <template>
   <div class="space-y-4">
     <div class="flex gap-4">
-      <ToolbarButton icon="i-ph-pencil-fill" @click="handlePencilClick" />
-      <ToolbarButton icon="i-ph-eraser-fill" @click="handleEraserClick" />
+      <ToolbarButton :active="mode === 'brush'" icon="i-ph-pencil-fill" @click="handlePencilClick" />
+      <ToolbarButton :active="mode === 'eraser'" icon="i-ph-eraser-fill" @click="handleEraserClick" />
       <ToolbarButton icon="i-ph-trash" @click="handleResetClick" />
     </div>
     <div v-if="false" class="flex gap-8 justify-center">
