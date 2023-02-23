@@ -4,6 +4,7 @@ import Konva from 'konva'
 import { useCanvasStore } from '~/stores/canvas'
 import { useStars } from '~/composables/stars'
 import type { VueKonvaLayer, VueKonvaStage } from '~/types'
+import { useDraw } from '~/composables/draw'
 
 const sceneWidth = 1500
 const sceneHeight = sceneWidth
@@ -28,56 +29,12 @@ const stars = useStars(sceneWidth, sceneHeight)
 const { list, dragItemId } = toRefs(stars)
 const { onDragStart, onDragEnd } = stars
 
-const stage = computed(() => stageRef.value?.getNode())
-
 const { texts } = storeToRefs(useCanvasStore())
 
-const isPaint = ref(false)
-const lastLine = ref<Konva.Line | null>(null)
-const mode = ref('brush')
-
 const layerRef = ref<VueKonvaLayer | null>(null)
-const layer = computed(() => layerRef.value?.getNode())
+const layer = computed(() => layerRef.value?.getNode() ?? null)
 
-function handleMouseDown() {
-  isPaint.value = true
-  const pos = stage.value?.getPointerPosition()
-
-  if (pos) {
-    const line = new Konva.Line({
-      stroke: '#df4b26',
-      strokeWidth: 30,
-      globalCompositeOperation:
-        mode.value === 'brush' ? 'source-over' : 'destination-out',
-      // round cap for smoother lines
-      lineCap: 'round',
-      lineJoin: 'round',
-      // add point twice, so we have some drawings even on a simple click
-      points: [pos.x * scale.value, pos.y * scale.value, pos.x * scale.value, pos.y * scale.value],
-    })
-    lastLine.value = line
-    layer.value?.add(line)
-  }
-}
-
-function handleMouseMove(e: Konva.KonvaEventObject<MouseEvent>) {
-  if (!isPaint.value)
-    return
-
-  // prevent scrolling on touch devices
-  e.evt.preventDefault()
-
-  const pos = stage.value?.getPointerPosition()
-  if (pos) {
-    const newPoints = lastLine.value?.points().concat([pos.x * scale.value, pos.y * scale.value])
-    if (newPoints)
-      lastLine.value?.points(newPoints)
-  }
-}
-
-function handleMouseUp() {
-  isPaint.value = false
-}
+const { handleMouseMove, handleMouseUp, handleMouseDown } = useDraw(layer, scale)
 </script>
 
 <template>
