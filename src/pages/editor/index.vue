@@ -27,27 +27,26 @@ const canvas = useCanvasStore()
 const addTextToCanvas = async () => {
   canvas.addTextToCanvas(textModel.value)
 
-  if (false) {
-    const document = doc(db, 'todos', 'luna').withConverter({
-      toFirestore: (todo: any) => {
-        return {
-          text: todo.text,
-        }
-      },
-      fromFirestore: (snapshot, options) => {
-        const data = snapshot.data(options)
-        return new Todo(data.text)
-      },
-    })
+  const document = doc(db, 'todos', 'luna').withConverter({
+    toFirestore: (todo: any) => {
+      return {
+        text: todo.text,
+      }
+    },
+    fromFirestore: (snapshot, options) => {
+      const data = snapshot.data(options)
+      return new Todo(data.text)
+    },
+  })
 
-    try {
-      await updateDoc(document, {
-        text: textModel.value,
-      })
-    }
-    catch (e) {
-      console.error('Error updating document: ', e)
-    }
+  try {
+    console.log('update firebase doc')
+    await updateDoc(document, {
+      text: textModel.value,
+    })
+  }
+  catch (e) {
+    console.error('Error updating document: ', e)
   }
 
   textModel.value = ''
