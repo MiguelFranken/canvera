@@ -6,7 +6,7 @@ export const useDraw = (layer: ComputedRef<Konva.Layer | null>, scale: Ref<numbe
   const isPaint = ref(false)
   const lastLine = ref<Konva.Line | null>(null)
 
-  const { stage, mode } = storeToRefs(useCanvasStore())
+  const { stage, mode, color } = storeToRefs(useCanvasStore())
 
   function handleMouseDown() {
     isPaint.value = true
@@ -14,7 +14,7 @@ export const useDraw = (layer: ComputedRef<Konva.Layer | null>, scale: Ref<numbe
 
     if (pos) {
       const line = new Konva.Line({
-        stroke: '#df4b26',
+        stroke: color.value,
         strokeWidth: 30,
         globalCompositeOperation:
           mode.value === 'brush' ? 'source-over' : 'destination-out',

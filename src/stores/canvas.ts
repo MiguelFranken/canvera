@@ -7,6 +7,7 @@ export const useCanvasStore = defineStore('canvas', () => {
   const stage = ref<Konva.Stage | null>(null)
   const texts = ref<string[]>([])
   const mode = ref<Mode>('brush')
+  const color = ref<string>('red')
 
   function setStage(s: Konva.Stage) {
     stage.value = unref(s)
@@ -32,16 +33,22 @@ export const useCanvasStore = defineStore('canvas', () => {
     mode.value = m
   }
 
+  function setPencilColor(c: string) {
+    color.value = c
+  }
+
   return {
     stage,
     texts,
     mode,
+    color,
 
     // mutations
     setStage,
     addTextToCanvas,
     setPencilMode,
     resetCanvas,
+    setPencilColor,
 
     // getter
     encodeCanvasAsImage,
