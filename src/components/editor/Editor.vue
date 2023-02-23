@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type Konva from 'konva'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '~/stores/canvas'
 import { useStars } from '~/composables/stars'
+import type { VueKonvaStage } from '~/types'
 
 const width = window.innerWidth
 const height = width
@@ -17,23 +17,38 @@ const { list, dragItemId } = toRefs(stars)
 const { onDragStart, onDragEnd } = stars
 
 // initialize canvas store
-const stage = ref<Konva.Stage | null>(null)
+const stageRef = ref<VueKonvaStage | null>(null)
 const { setStage } = useCanvasStore()
 onMounted(() => {
-  if (stage.value)
-    setStage(stage.value.getStage())
+  if (stageRef.value)
+    setStage(stageRef.value.getNode())
 })
 
+const stage = computed(() => stageRef.value?.getNode())
+
 const { texts } = storeToRefs(useCanvasStore())
+
+const position = ref({ x: 0, y: 0 })
+
+function handleMouseMove() {
+  const mousePos = stage.value?.getRelativePointerPosition()
+  if (mousePos) {
+    const x = mousePos.x - 190
+    const y = mousePos.y - 40
+    position.value = { x, y }
+  }
+}
 </script>
 
 <template>
   <div class="rounded-xl outline outline-8 outline-offset-0 outline-blue-500">
+    {{ position }}
     <v-stage
-      ref="stage"
+      ref="stageRef"
       :config="configKonva"
       @dragstart="onDragStart"
       @dragend="onDragEnd"
+      @mousemove="handleMouseMove"
     >
       <v-layer>
         <v-star
