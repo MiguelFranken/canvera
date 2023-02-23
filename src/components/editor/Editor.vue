@@ -4,25 +4,28 @@ import { useCanvasStore } from '~/stores/canvas'
 import { useStars } from '~/composables/stars'
 import type { VueKonvaStage } from '~/types'
 
-const width = window.innerWidth
-const height = width
-
-const configKonva = ref({
-  width,
-  height,
-})
-
-const stars = useStars(width, height)
-const { list, dragItemId } = toRefs(stars)
-const { onDragStart, onDragEnd } = stars
+const sceneWidth = 1000
+const sceneHeight = sceneWidth
 
 // initialize canvas store
+const configKonva = ref({
+  sceneWidth,
+  sceneHeight,
+})
 const stageRef = ref<VueKonvaStage | null>(null)
 const { setStage } = useCanvasStore()
 onMounted(() => {
   if (stageRef.value)
     setStage(stageRef.value.getNode())
 })
+
+const container = ref<HTMLElement | null>(null)
+
+useFitStage(container, sceneWidth)
+
+const stars = useStars(sceneWidth, sceneHeight)
+const { list, dragItemId } = toRefs(stars)
+const { onDragStart, onDragEnd } = stars
 
 const stage = computed(() => stageRef.value?.getNode())
 
@@ -41,8 +44,10 @@ function handleMouseMove() {
 </script>
 
 <template>
-  <div class="rounded-xl outline outline-8 outline-offset-0 outline-blue-500">
+  <div class="text-center">
     {{ position }}
+  </div>
+  <div ref="container" class="outline outline-8 outline-offset-0 outline-blue-500 m-16">
     <v-stage
       ref="stageRef"
       :config="configKonva"

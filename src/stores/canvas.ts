@@ -21,6 +21,7 @@ export const useCanvasStore = defineStore('canvas', () => {
   }
 
   return {
+    stage,
     texts,
 
     // mutations
