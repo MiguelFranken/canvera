@@ -44,7 +44,7 @@ const colors: Color[] = [
 ]
 
 const { setPencilMode, resetCanvas, setPencilColor } = useCanvasStore()
-const { mode } = storeToRefs(useCanvasStore())
+const { mode, color: activeColor } = storeToRefs(useCanvasStore())
 
 function handlePencilClick() {
   setPencilMode('brush')
@@ -70,13 +70,20 @@ function HandlePencilColorClick(color: string) {
       <ToolbarButton :active="mode === 'eraser'" icon="i-ph-eraser-fill" @click="handleEraserClick" />
       <ToolbarButton icon="i-ph-trash" @click="handleResetClick" />
     </div>
-    <div v-if="mode === 'brush'" class="flex gap-4 max-w-full overflow-x-auto snap-x pb-4">
-      <div
-        v-for="color in colors"
-        :key="color.code"
-        :style="{ backgroundColor: color.code }"
-        class="rounded-md w-14 h-14 border-4 shrink-0 snap-center" @click="HandlePencilColorClick(color.code)"
-      />
+    <div>
+      <div v-if="mode === 'brush'" class="flex gap-4 items-center max-w-full overflow-x-auto snap-x h-22">
+        <div
+          v-for="color in colors"
+          :key="color.code"
+          :style="{ backgroundColor: color.code }"
+          class="rounded-md w-12 h-12 shrink-0 snap-center transition-all duration-300 ease-in-out"
+          :class="{
+            '': color.code !== activeColor,
+            'border-4 border-gray-500 w-22 h-22': color.code === activeColor,
+          }"
+          @click="HandlePencilColorClick(color.code)"
+        />
+      </div>
     </div>
   </div>
 </template>

@@ -10,7 +10,7 @@ const { icon } = withDefaults(defineProps<{
 <template>
   <button
     type="button"
-    class="inline-flex items-center rounded-full border border-transparent p-3 text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2"
+    class="inline-flex items-center rounded-full border border-transparent p-3 text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-150"
     :class="{
       'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500': active,
       'bg-gray-500 hover:bg-gray-700 focus:ring-gray-500': !active,
