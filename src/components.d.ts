@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Button: typeof import('./components/patterns/button/Button.vue')['default']
+    ColorSelection: typeof import('./components/editor/toolbar/ColorSelection.vue')['default']
     Editor: typeof import('./components/editor/Editor.vue')['default']
     Footer: typeof import('./components/patterns/layout/Footer.vue')['default']
     Header: typeof import('./components/patterns/layout/Header.vue')['default']
@@ -19,7 +20,8 @@ declare module '@vue/runtime-core' {
     TheCounter: typeof import('./components/TheCounter.vue')['default']
     TheFooter: typeof import('./components/TheFooter.vue')['default']
     TheInput: typeof import('./components/TheInput.vue')['default']
-    Toolbar: typeof import('./components/editor/Toolbar.vue')['default']
+    Toolbar: typeof import('./components/editor/toolbar/Toolbar.vue')['default']
+    ToolbarActions: typeof import('./components/editor/toolbar/ToolbarActions.vue')['default']
     ToolbarButton: typeof import('./components/patterns/button/ToolbarButton.vue')['default']
   }
 }

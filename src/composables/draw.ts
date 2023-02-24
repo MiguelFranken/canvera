@@ -6,7 +6,8 @@ export const useDraw = (scale: Ref<number>) => {
   const isPaint = ref(false)
   const lastLine = ref<Konva.Line | null>(null)
 
-  const { stage, layer, mode, color } = storeToRefs(useCanvasStore())
+  const { stage, layer } = storeToRefs(useCanvasStore())
+  const { color, mode } = storeToRefs(useToolbarStore())
 
   function handleMouseDown() {
     isPaint.value = true

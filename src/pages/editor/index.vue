@@ -2,7 +2,6 @@
 import { useFirestore } from 'vuefire'
 import { doc, updateDoc } from 'firebase/firestore'
 import { useCanvasStore } from '~/stores/canvas'
-import Toolbar from '~/components/editor/Toolbar.vue'
 
 defineOptions({
   name: 'EditorPage',

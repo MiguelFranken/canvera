@@ -1,12 +1,8 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import Konva from 'konva'
 
-type Mode = 'brush' | 'eraser'
-
 export const useCanvasStore = defineStore('canvas', () => {
   const stage = ref<Konva.Stage | null>(null)
-  const mode = ref<Mode>('brush')
-  const color = ref<string>('red')
 
   const layer = ref<Konva.Layer | null>(null)
 
@@ -40,26 +36,14 @@ export const useCanvasStore = defineStore('canvas', () => {
     layer.value?.add(textNode)
   }
 
-  function setPencilMode(m: Mode) {
-    mode.value = m
-  }
-
-  function setPencilColor(c: string) {
-    color.value = c
-  }
-
   return {
     stage,
-    mode,
-    color,
     layer,
 
     // mutations
     setStage,
     addTextToCanvas,
-    setPencilMode,
     resetCanvas,
-    setPencilColor,
 
     // getter
     encodeCanvasAsImage,
