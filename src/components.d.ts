@@ -22,6 +22,6 @@ declare module '@vue/runtime-core' {
     TheInput: typeof import('./components/TheInput.vue')['default']
     Toolbar: typeof import('./components/editor/toolbar/Toolbar.vue')['default']
     ToolbarActions: typeof import('./components/editor/toolbar/ToolbarActions.vue')['default']
-    ToolbarButton: typeof import('./components/patterns/button/ToolbarButton.vue')['default']
+    ToolbarButton: typeof import('./components/editor/toolbar/ToolbarButton.vue')['default']
   }
 }
