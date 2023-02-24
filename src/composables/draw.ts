@@ -1,12 +1,12 @@
 import Konva from 'konva'
 import { storeToRefs } from 'pinia'
-import type { ComputedRef, Ref } from 'vue'
+import type { Ref } from 'vue'
 
-export const useDraw = (layer: ComputedRef<Konva.Layer | null>, scale: Ref<number>) => {
+export const useDraw = (scale: Ref<number>) => {
   const isPaint = ref(false)
   const lastLine = ref<Konva.Line | null>(null)
 
-  const { stage, mode, color } = storeToRefs(useCanvasStore())
+  const { stage, layer, mode, color } = storeToRefs(useCanvasStore())
 
   function handleMouseDown() {
     isPaint.value = true
