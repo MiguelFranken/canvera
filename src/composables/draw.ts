@@ -38,9 +38,34 @@ export const useDraw = () => {
 
     const pos = stage.value?.getPointerPosition()
     if (pos) {
-      const newPoints = lastLine.value?.points().concat([pos.x * scale.value, pos.y * scale.value])
-      if (newPoints)
-        lastLine.value?.points(newPoints)
+      const [prevX, prevY] = [
+        lastLine.value!.points()[lastLine.value!.points().length - 2]!,
+        lastLine.value!.points()[lastLine.value!.points().length - 1]!,
+      ]
+      const newPosition = [
+        pos.x * scale.value,
+        pos.y * scale.value,
+      ]
+      let newPoints: number[] = []
+
+      let dx = newPosition[0] - prevX
+      let dy = newPosition[1] - prevY
+      const dist = Math.max(Math.abs(dx), Math.abs(dy))
+      dx = dx / dist
+      dy = dy / dist
+
+      let x = prevX
+      let y = prevY
+      for (let d = 0; d < dist; d++) {
+        newPoints = newPoints.concat([x, y])
+
+        x += dx
+        y += dy
+      }
+
+      const updatedPoints = lastLine.value?.points().concat(newPoints)
+      if (updatedPoints)
+        lastLine.value?.points(updatedPoints)
     }
   }
 
