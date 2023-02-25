@@ -45,6 +45,10 @@ const colors: Color[] = [
 const { setPencilColor } = useToolbarStore()
 const { color: activeColor } = storeToRefs(useToolbarStore())
 
+onMounted(() => {
+  setPencilColor(colors[0].code)
+})
+
 function HandlePencilColorClick(color: string) {
   setPencilColor(color)
 }
