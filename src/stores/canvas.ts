@@ -17,7 +17,7 @@ export const useCanvasStore = defineStore('canvas', () => {
     const sceneHeight = sceneWidth
 
     // initialize canvas store
-    const configKonva = {
+    const configKonva: Omit<Konva.StageConfig, 'container'> = {
       width: sceneWidth,
       height: sceneHeight,
     }
@@ -56,7 +56,8 @@ export const useCanvasStore = defineStore('canvas', () => {
   async function encodeCanvasAsImage() {
     return await stage.value?.toDataURL({
       mimeType: 'image/jpeg',
-      quality: 0.8,
+      quality: 1,
+      pixelRatio: 3,
     }) ?? ''
   }
 
