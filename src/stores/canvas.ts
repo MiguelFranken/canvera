@@ -2,15 +2,52 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import Konva from 'konva'
 
 export const useCanvasStore = defineStore('canvas', () => {
+  const container = ref<HTMLDivElement | null>(null)
+
+  // canvas
   const stage = ref<Konva.Stage | null>(null)
-
   const layer = ref<Konva.Layer | null>(null)
+  const scale = ref(1)
 
-  function setStage(s: Konva.Stage) {
-    stage.value = unref(s)
+  function initStage(stageContainer: HTMLDivElement) {
+    container.value = stageContainer
+
+    const sceneWidth = 1500
+    const sceneHeight = sceneWidth
+
+    // initialize canvas store
+    const configKonva = {
+      width: sceneWidth,
+      height: sceneHeight,
+    }
+
+    const s = new Konva.Stage({
+      container: stageContainer,
+      ...configKonva,
+    })
+
+    stage.value = s
+
+    const { scale: computedScale } = useFitStage(s, container.value, sceneWidth)
+    watch(computedScale, (newScale) => {
+      scale.value = newScale
+    }, { immediate: true })
+
+    initMainLayer()
+    initDraw()
+  }
+
+  function initMainLayer() {
     const mainLayer = new Konva.Layer()
     stage.value!.add(mainLayer)
     layer.value = mainLayer
+  }
+
+  function initDraw() {
+    const { handleMouseMove, handleMouseUp, handleMouseDown } = useDraw()
+    stage.value?.on('mousedown touchstart', handleMouseDown)
+    stage.value?.on('mousemove touchmove', handleMouseMove)
+    stage.value?.on('mouseup touchend', handleMouseUp)
   }
 
   async function encodeCanvasAsImage() {
@@ -39,9 +76,10 @@ export const useCanvasStore = defineStore('canvas', () => {
   return {
     stage,
     layer,
+    scale,
 
     // mutations
-    setStage,
+    initStage,
     addTextToCanvas,
     resetCanvas,
 

@@ -1,31 +1,20 @@
-import { storeToRefs } from 'pinia'
-import type { Ref } from 'vue'
-import { useCanvasStore } from '~/stores/canvas'
+import type Konva from 'konva'
 
-export const useFitStage = (container: Ref<HTMLElement | null>, sceneWidth: number) => {
-  const { stage } = storeToRefs(useCanvasStore())
-
+export const useFitStage = (stage: Konva.Stage, container: HTMLElement, sceneWidth: number) => {
   // we need to fit stage into parent container
-  const containerWidth = ref(container.value?.offsetWidth ?? 0)
+  const containerWidth = ref(container.offsetWidth ?? 0)
 
   const scale = computed(() => containerWidth.value / sceneWidth)
   const scaleInverted = computed(() => 1 / scale.value)
 
   function fitStageIntoParentContainer() {
-    containerWidth.value = container.value?.offsetWidth ?? 0
-
-    if (container.value && stage.value) {
-      stage.value.width(sceneWidth * scale.value)
-      stage.value.height(sceneWidth * scale.value)
-      stage.value.scale({ x: scale.value, y: scale.value })
-    }
+    containerWidth.value = container.offsetWidth ?? 0
+    stage.width(sceneWidth * scale.value)
+    stage.height(sceneWidth * scale.value)
+    stage.scale({ x: scale.value, y: scale.value })
   }
 
-  // initial fit
-  onMounted(() => {
-    fitStageIntoParentContainer()
-  })
-
+  fitStageIntoParentContainer()
   useEventListener(window, 'resize', fitStageIntoParentContainer)
 
   return {
