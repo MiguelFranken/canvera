@@ -1,6 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import Konva from 'konva'
-import { useBackground } from '~/composables/background'
 
 export const useCanvasStore = defineStore('canvas', () => {
   const container = ref<HTMLDivElement | null>(null)
@@ -8,6 +7,7 @@ export const useCanvasStore = defineStore('canvas', () => {
   // canvas
   const stage = ref<Konva.Stage | null>(null)
   const layer = ref<Konva.Layer | null>(null)
+  const backgroundLayer = ref<Konva.Layer | null>(null)
   const scale = ref(1)
 
   function initStage(stageContainer: HTMLDivElement) {
@@ -34,16 +34,19 @@ export const useCanvasStore = defineStore('canvas', () => {
       scale.value = newScale
     }, { immediate: true })
 
-    initMainLayer()
+    initLayers()
     initDraw()
   }
 
-  function initMainLayer() {
+  function initLayers() {
+    const background = new Konva.Layer()
+    stage.value!.add(background)
+    backgroundLayer.value = background
+    useBackground().addBackground(background, 'white')
+
     const mainLayer = new Konva.Layer()
     stage.value!.add(mainLayer)
     layer.value = mainLayer
-
-    useBackground().addBackground(mainLayer, 'white')
   }
 
   function initDraw() {
