@@ -80,9 +80,13 @@ export const useDraw = () => {
     isPaint.value = false
   }
 
+  function init() {
+    stage.value?.on('mousedown touchstart', handleMouseDown)
+    stage.value?.on('mousemove touchmove', handleMouseMove)
+    stage.value?.on('mouseup touchend', handleMouseUp)
+  }
+
   return {
-    handleMouseDown,
-    handleMouseMove,
-    handleMouseUp,
+    init,
   }
 }

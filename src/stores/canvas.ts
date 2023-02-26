@@ -35,7 +35,7 @@ export const useCanvasStore = defineStore('canvas', () => {
     }, { immediate: true })
 
     initLayers()
-    initDraw()
+    useDraw().init()
   }
 
   function initLayers() {
@@ -47,13 +47,6 @@ export const useCanvasStore = defineStore('canvas', () => {
     const mainLayer = new Konva.Layer()
     stage.value!.add(mainLayer)
     layer.value = mainLayer
-  }
-
-  function initDraw() {
-    const { handleMouseMove, handleMouseUp, handleMouseDown } = useDraw()
-    stage.value?.on('mousedown touchstart', handleMouseDown)
-    stage.value?.on('mousemove touchmove', handleMouseMove)
-    stage.value?.on('mouseup touchend', handleMouseUp)
   }
 
   async function encodeCanvasAsImage() {
