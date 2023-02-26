@@ -19,6 +19,10 @@ function handleEraserClick() {
 function handleResetClick() {
   resetCanvas()
 }
+
+function handleBackClick() {
+  console.log('handle back click')
+}
 </script>
 
 <template>
@@ -26,5 +30,6 @@ function handleResetClick() {
     <ToolbarButton :active="mode === 'brush'" icon="i-ph-pencil-fill" @click="handlePencilClick" />
     <ToolbarButton :active="mode === 'eraser'" icon="i-ph-eraser-fill" @click="handleEraserClick" />
     <ToolbarButton icon="i-ph-trash" @click="handleResetClick" />
+    <ToolbarButton icon="i-ph-arrow-arc-left" @click="handleBackClick" />
   </div>
 </template>
