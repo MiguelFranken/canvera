@@ -51,12 +51,19 @@ export const useDraw = () => {
       let dx = newPosition[0] - prevX
       let dy = newPosition[1] - prevY
       const dist = Math.max(Math.abs(dx), Math.abs(dy))
+
+      // drawing always generates little artifacts
+      if (dist <= 10)
+        return
+
       dx = dx / dist
       dy = dy / dist
 
       let x = prevX
       let y = prevY
-      for (let d = 0; d < dist; d++) {
+
+      // interpolate between previous point and current point to draw
+      for (let d = 0; d < dist; d += 5) {
         newPoints = newPoints.concat([x, y])
 
         x += dx
