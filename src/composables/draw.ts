@@ -1,7 +1,7 @@
 import type Konva from 'konva'
 import { storeToRefs } from 'pinia'
 import { Observable } from 'rxjs'
-import { DrawLineCommand } from '~/composables/draw.command'
+import { DrawLineCommand } from '~/commands/draw.command'
 
 export const useDraw = () => {
   const { stage, layer, scale } = storeToRefs(useCanvasStore())

@@ -1,8 +1,8 @@
 import type Konva from 'konva'
 import type { Observable, Subscription } from 'rxjs'
-import type { Command } from '~/composables/command'
 import { useDrawer } from '~/composables/drawer'
 import type { Mode } from '~/stores/toolbar'
+import type { Command } from '~/commands/command.interface'
 
 export class DrawLineCommand implements Command {
   private line: Konva.Line | null = null

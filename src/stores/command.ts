@@ -1,9 +1,5 @@
 import { defineStore } from 'pinia'
-
-export interface Command {
-  execute(): void
-  undo(): void
-}
+import type { Command } from '~/commands/command.interface'
 
 class CommandHistory {
   private history: Command[] = []
