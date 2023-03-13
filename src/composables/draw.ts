@@ -18,8 +18,7 @@ export const useDraw = () => {
           y: pos.y * scale.value,
         })
 
-        // push subsequent positions
-        stage.value?.on('mousemove touchmove', () => {
+        const onMouseMove = () => {
           const nextPos = stage.value?.getPointerPosition()
           if (nextPos) {
             subscriber.next({
@@ -27,11 +26,15 @@ export const useDraw = () => {
               y: nextPos.y * scale.value,
             })
           }
-        })
+        }
+
+        // push subsequent positions
+        stage.value?.on('mousemove.draw touchmove.draw', onMouseMove)
 
         // handle end of drawing
-        stage.value?.on('mouseup touchend', () => {
+        stage.value?.on('mouseup.draw touchend.draw', () => {
           subscriber.complete()
+          stage.value?.off('mousemove.draw touchmove.draw')
         })
       })
 
