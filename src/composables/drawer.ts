@@ -69,10 +69,17 @@ export const useDrawer = () => {
     }
 
     line.points(updatedPoints)
+
+    return updatedPoints
+  }
+
+  const drawPoints = (line: Konva.Line, points: number[]) => {
+    line.points(points)
   }
 
   return {
     beginDrawLine,
     continueDrawLine,
+    drawPoints,
   }
 }

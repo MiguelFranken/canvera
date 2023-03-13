@@ -7,7 +7,7 @@ import type { Mode } from '~/stores/toolbar'
 export class DrawLineCommand implements Command {
   private line: Konva.Line | null = null
   private subscription: Subscription | null = null
-  private positions: Konva.Vector2d[] = []
+  private points: number[] = []
 
   constructor(
     private layer: Konva.Layer,
@@ -17,16 +17,17 @@ export class DrawLineCommand implements Command {
   ) {}
 
   execute() {
-    const { beginDrawLine, continueDrawLine } = useDrawer()
+    const { beginDrawLine, continueDrawLine, drawPoints } = useDrawer()
 
     this.line = beginDrawLine(this.layer, this.color, this.mode)
 
-    this.positions.forEach(position => continueDrawLine(this.line!, position))
+    drawPoints(this.line, this.points)
 
-    if (this.positions.length === 0) {
+    if (this.points.length === 0) {
       this.subscription = this.positionObservable.subscribe((position) => {
-        this.positions.push(position)
-        continueDrawLine(this.line!, position)
+        const updatedPoints = continueDrawLine(this.line!, position)
+        if (updatedPoints)
+          this.points = updatedPoints
       })
     }
   }
