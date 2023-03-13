@@ -1,89 +1,47 @@
-import Konva from 'konva'
+import type Konva from 'konva'
 import { storeToRefs } from 'pinia'
+import { Observable } from 'rxjs'
+import { DrawLineCommand } from '~/composables/draw.command'
 
 export const useDraw = () => {
-  const isPaint = ref(false)
-  const lastLine = ref<Konva.Line | null>(null)
-
   const { stage, layer, scale } = storeToRefs(useCanvasStore())
   const { color, mode } = storeToRefs(useToolbarStore())
 
   function handleMouseDown() {
-    isPaint.value = true
     const pos = stage.value?.getPointerPosition()
 
     if (pos) {
-      const line = new Konva.Line({
-        stroke: color.value,
-        strokeWidth: 30,
-        globalCompositeOperation:
-          mode.value === 'brush' ? 'source-over' : 'destination-out',
-        // round cap for smoother lines
-        lineCap: 'round',
-        lineJoin: 'round',
-        // add point twice, so we have some drawings even on a simple click
-        points: [pos.x * scale.value, pos.y * scale.value, pos.x * scale.value, pos.y * scale.value],
+      const observable = new Observable<Konva.Vector2d>((subscriber) => {
+        // push initial position
+        subscriber.next({
+          x: pos.x * scale.value,
+          y: pos.y * scale.value,
+        })
+
+        // push subsequent positions
+        stage.value?.on('mousemove touchmove', () => {
+          const nextPos = stage.value?.getPointerPosition()
+          if (nextPos) {
+            subscriber.next({
+              x: nextPos.x * scale.value,
+              y: nextPos.y * scale.value,
+            })
+          }
+        })
+
+        // handle end of drawing
+        stage.value?.on('mouseup touchend', () => {
+          subscriber.complete()
+        })
       })
-      lastLine.value = line
-      layer.value?.add(line)
+
+      const { execute } = useCommandStore()
+      execute(new DrawLineCommand(layer.value as Konva.Layer, observable, color.value, mode.value))
     }
-  }
-
-  function handleMouseMove(e: Konva.KonvaEventObject<MouseEvent>) {
-    if (!isPaint.value)
-      return
-
-    // prevent scrolling on touch devices
-    e.evt.preventDefault()
-
-    const pos = stage.value?.getPointerPosition()
-    if (pos) {
-      const [prevX, prevY] = [
-        lastLine.value!.points()[lastLine.value!.points().length - 2]!,
-        lastLine.value!.points()[lastLine.value!.points().length - 1]!,
-      ]
-      const newPosition = [
-        pos.x * scale.value,
-        pos.y * scale.value,
-      ]
-      let newPoints: number[] = []
-
-      let dx = newPosition[0] - prevX
-      let dy = newPosition[1] - prevY
-      const dist = Math.max(Math.abs(dx), Math.abs(dy))
-
-      // drawing always generates little artifacts
-      if (dist <= 10)
-        return
-
-      dx = dx / dist
-      dy = dy / dist
-
-      let x = prevX
-      let y = prevY
-
-      // interpolate between previous point and current point to draw
-      for (let d = 0; d < dist; d += 5) {
-        newPoints = newPoints.concat([x, y])
-
-        x += dx
-        y += dy
-      }
-
-      const updatedPoints = lastLine.value?.points().concat(newPoints)
-      if (updatedPoints)
-        lastLine.value?.points(updatedPoints)
-    }
-  }
-
-  function handleMouseUp() {
-    isPaint.value = false
   }
 
   function init() {
     stage.value?.on('mousedown touchstart', handleMouseDown)
-    stage.value?.on('mousemove touchmove', handleMouseMove)
-    stage.value?.on('mouseup touchend', handleMouseUp)
   }
 
   return {
