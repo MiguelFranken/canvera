@@ -21,27 +21,43 @@ class CommandHistory {
   public get length(): number {
     return this.history.length
   }
+
+  public reset() {
+    this.history = []
+  }
 }
 
 export const useCommandStore = defineStore('command', () => {
   const history = ref<CommandHistory>(new CommandHistory())
+  const undoedCommands = ref<CommandHistory>(new CommandHistory())
 
   function execute(command: Command) {
-    console.log('Command Store: Executing command', command)
     command.execute()
     history.value.push(command)
+    undoedCommands.value.reset()
   }
 
   function undo() {
     const command = history.value.pop()
     command.undo()
+    undoedCommands.value.push(command)
+  }
+
+  function redo() {
+    const command = undoedCommands.value.pop()!
+    command.execute()
+    history.value.push(command)
   }
 
   const canUndo = computed(() => history.value.length > 0)
+  const canRedo = computed(() => undoedCommands.value.length > 0)
 
   return {
     execute,
     undo,
     canUndo,
+
+    canRedo,
+    redo,
   }
 })

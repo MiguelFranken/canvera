@@ -1,11 +1,13 @@
 import type Konva from 'konva'
-import type { Observable } from 'rxjs'
+import type { Observable, Subscription } from 'rxjs'
 import type { Command } from '~/composables/command'
 import { useDrawer } from '~/composables/drawer'
 import type { Mode } from '~/stores/toolbar'
 
 export class DrawLineCommand implements Command {
   private line: Konva.Line | null = null
+  private subscription: Subscription | null = null
+  private positions: Konva.Vector2d[] = []
 
   constructor(
     private layer: Konva.Layer,
@@ -19,12 +21,18 @@ export class DrawLineCommand implements Command {
 
     this.line = beginDrawLine(this.layer, this.color, this.mode)
 
-    this.positionObservable.subscribe((position) => {
-      continueDrawLine(this.line!, position)
-    })
+    this.positions.forEach(position => continueDrawLine(this.line!, position))
+
+    if (this.positions.length === 0) {
+      this.subscription = this.positionObservable.subscribe((position) => {
+        this.positions.push(position)
+        continueDrawLine(this.line!, position)
+      })
+    }
   }
 
   undo() {
+    this.subscription?.unsubscribe()
     this.line!.destroy()
   }
 }

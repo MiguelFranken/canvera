@@ -7,8 +7,8 @@ const { mode } = storeToRefs(useToolbarStore())
 const { resetCanvas } = useCanvasStore()
 const { setPencilMode } = useToolbarStore()
 const commandStore = useCommandStore()
-const { canUndo } = storeToRefs(commandStore)
-const { undo } = commandStore
+const { canUndo, canRedo } = storeToRefs(commandStore)
+const { undo, redo } = commandStore
 </script>
 
 <template>
@@ -17,5 +17,6 @@ const { undo } = commandStore
     <ToolbarButton :active="mode === 'eraser'" icon="i-ph-eraser-fill" @click="setPencilMode('eraser')" />
     <ToolbarButton icon="i-ph-trash" @click="resetCanvas" />
     <ToolbarButton v-if="canUndo" icon="i-ph-arrow-arc-left" @click="undo" />
+    <ToolbarButton v-if="canRedo" icon="i-ph-arrow-arc-right" @click="redo" />
   </div>
 </template>
