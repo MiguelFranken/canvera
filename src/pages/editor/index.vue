@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { useFirestore } from 'vuefire'
+import { useCurrentUser, useFirestore } from 'vuefire'
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { useCanvasStore } from '~/stores/canvas'
+import Listbox from '~/components/patterns/listbox/Listbox.vue'
+import ReceiverListbox from '~/components/ReceiverListbox.vue'
 
 defineOptions({
   name: 'EditorPage',
@@ -20,13 +22,18 @@ const onSaveImage = async () => {
 
 const db = useFirestore()
 
+const receiver = ref<string>('')
+
 const onUploadImage = async () => {
   const encoded = await encodeCanvasAsImage()
+  const user = useCurrentUser()
 
   try {
     await addDoc(collection(db, 'images'), {
       src: encoded,
       timestamp: serverTimestamp(),
+      author: user.value!.uid,
+      receiver: receiver.value,
     })
   }
   catch (e) {
@@ -112,6 +119,10 @@ class Todo {
       <div class="space-y-8 m-8">
         <Editor />
         <Toolbar />
+      </div>
+
+      <div class="flex justify-center">
+        <ReceiverListbox v-model="receiver" />
       </div>
 
       <div class="flex justify-center gap-16">
