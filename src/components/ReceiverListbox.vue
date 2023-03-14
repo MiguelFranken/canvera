@@ -24,7 +24,7 @@ const options = computed<IListboxOption[]>(() => users.value.map(user => ({
   name: user.displayName,
 })))
 
-const selectedOption = ref('')
+const selectedOption = ref<string>('')
 
 watchEffect(() => {
   if (options.value.length === 0)

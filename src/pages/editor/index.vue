@@ -2,7 +2,6 @@
 import { useCurrentUser, useFirestore } from 'vuefire'
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { useCanvasStore } from '~/stores/canvas'
-import Listbox from '~/components/patterns/listbox/Listbox.vue'
 import ReceiverListbox from '~/components/ReceiverListbox.vue'
 
 defineOptions({

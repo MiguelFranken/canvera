@@ -3,14 +3,6 @@ import { useCollection, useCurrentUser, useFirestore } from 'vuefire'
 import { collection, limit, orderBy, query } from 'firebase/firestore'
 const db = useFirestore()
 
-const q = query(
-  collection(db, 'images'),
-  orderBy('timestamp', 'desc'),
-  limit(3),
-)
-
-const images = useCollection(q, { ssrKey: 'my-quiz' })
-
 const user = useCurrentUser()
 
 const authoredImages = useCollection(

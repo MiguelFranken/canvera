@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import {
-  Listbox,
   ListboxButton,
-  ListboxLabel,
+  Listbox as ListboxComponent,
   ListboxOption,
   ListboxOptions,
 } from '@headlessui/vue'
@@ -23,26 +21,30 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-const { options } = toRefs(props)
+const { options, modelValue } = toRefs(props)
 
-const selectedOption = computed({
-  get(): IListboxOption {
-    const mappedOption = options.value.find(option => option.id === props.modelValue)
-    if (mappedOption)
-      return mappedOption
+const selectedOption = computed(() => {
+  const mappedOption = options.value.find(option => option.id === props.modelValue)
+  if (mappedOption)
+    return mappedOption
 
-    console.error(`There is no option with id: ${props.modelValue}`)
-    return options.value[0]
+  console.error(`There is no option with id: ${props.modelValue}`)
+  return options.value[0]
+})
+
+const model = computed<string>({
+  get(): IListboxOption['id'] {
+    return modelValue.value
   },
-  set(value: IListboxOption) {
-    emit('update:modelValue', value.id)
+  set(value: IListboxOption['id']) {
+    emit('update:modelValue', value)
   },
 })
 </script>
 
 <template>
   <div class="w-72">
-    <Listbox v-model="selectedOption">
+    <ListboxComponent v-model="model">
       <div class="relative mt-1">
         <ListboxButton
           class="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
@@ -70,7 +72,7 @@ const selectedOption = computed({
               v-for="option in options"
               v-slot="{ active, selected }"
               :key="option.name"
-              :value="option"
+              :value="option.id"
               as="template"
             >
               <li
@@ -94,6 +96,6 @@ const selectedOption = computed({
           </ListboxOptions>
         </transition>
       </div>
-    </Listbox>
+    </ListboxComponent>
   </div>
 </template>
