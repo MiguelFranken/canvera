@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { VueFire, VueFireAuth } from 'vuefire'
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 import { type UserModule } from '~/types'
 
 const firebaseConfig = {
@@ -14,6 +15,9 @@ const firebaseConfig = {
 
 export const install: UserModule = ({ app }) => {
   const firebaseApp = initializeApp(firebaseConfig)
+
+  const db = getFirestore()
+  connectFirestoreEmulator(db, 'localhost', 8080)
 
   app.use(VueFire, {
     firebaseApp,
