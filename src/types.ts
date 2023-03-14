@@ -14,5 +14,6 @@ export interface VueKonvaLayer {
 declare module 'vue-router' {
   interface RouteMeta {
     title?: string
+    requiresAuth?: boolean
   }
 }

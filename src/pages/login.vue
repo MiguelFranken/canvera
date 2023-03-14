@@ -1,11 +1,48 @@
 <script setup lang="ts">
+import { getCurrentUser, useFirebaseAuth } from 'vuefire'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+
 defineOptions({
   name: 'LoginPage',
 })
 
+const auth = useFirebaseAuth()
+const route = useRoute()
+const router = useRouter()
+
 const onLoginViaGoogle = () => {
-  console.log('onLoginViaGoogle')
+  signInWithEmailAndPassword(auth!, 'miguelfranken90@gmail.com', 'Miguel1996')
+    .then(async (userCredential) => {
+      // Signed in
+      const user = userCredential.user
+      console.log('user logged in: ', user)
+
+      const to
+        = route.query.redirect && typeof route.query.redirect === 'string'
+          ? route.query.redirect
+          : '/'
+
+      await router.push(to)
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code
+      const errorMessage = error.message
+      console.error('error', errorCode, errorMessage)
+    })
 }
+
+onMounted(async () => {
+  const currentUser = await getCurrentUser()
+  if (currentUser) {
+    const to
+      = route.query.redirect && typeof route.query.redirect === 'string'
+        ? route.query.redirect
+        : '/'
+
+    await router.push(to)
+  }
+})
 </script>
 
 <template>
@@ -31,4 +68,5 @@ const onLoginViaGoogle = () => {
 <route lang="yaml">
 meta:
   layout: home
+  requiresAuth: false
 </route>
