@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useFirestore } from 'vuefire'
-import { doc, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
 import { useCanvasStore } from '~/stores/canvas'
 
 defineOptions({
@@ -18,9 +18,24 @@ const onSaveImage = async () => {
   encodedCanvasImage.value = encoded
 }
 
-const textModel = ref('')
-
 const db = useFirestore()
+
+const onUploadImage = async () => {
+  console.log('On Upload Image')
+
+  const encoded = await encodeCanvasAsImage()
+
+  try {
+    const docRef = await addDoc(collection(db, 'images'), {
+      img: encoded,
+    })
+  }
+  catch (e) {
+    console.error('Error adding document: ', e)
+  }
+}
+
+const textModel = ref('')
 
 const canvas = useCanvasStore()
 const addTextToCanvas = async () => {
@@ -101,9 +116,12 @@ class Todo {
         <Toolbar />
       </div>
 
-      <div class="flex justify-center">
+      <div class="flex justify-center gap-16">
         <Button @click="onSaveImage">
           Save Image
+        </Button>
+        <Button @click="onUploadImage">
+          Upload Image
         </Button>
       </div>
 

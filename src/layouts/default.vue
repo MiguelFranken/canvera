@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const title = computed(() => useRouter().currentRoute.value.meta.title)
+import type { ComputedRef } from 'vue-demi'
+
+const title: ComputedRef<string> = computed<string>(() => useRouter().currentRoute.value.meta.title ?? '')
 </script>
 
 <template>
