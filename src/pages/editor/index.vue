@@ -29,11 +29,16 @@ const onUploadImage = async () => {
   const user = useCurrentUser()
 
   try {
-    await addDoc(collection(db, 'images'), {
+    await addDoc(collection(db, `collection/${user.value!.uid}/authored`), {
+      src: encoded,
+      timestamp: serverTimestamp(),
+      receiver: receiver.value,
+    })
+
+    await addDoc(collection(db, `collection/${receiver.value}/received`), {
       src: encoded,
       timestamp: serverTimestamp(),
       author: user.value!.uid,
-      receiver: receiver.value,
     })
   }
   catch (e) {
