@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useFirestore } from 'vuefire'
-import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { useCanvasStore } from '~/stores/canvas'
 
 defineOptions({
@@ -21,13 +21,12 @@ const onSaveImage = async () => {
 const db = useFirestore()
 
 const onUploadImage = async () => {
-  console.log('On Upload Image')
-
   const encoded = await encodeCanvasAsImage()
 
   try {
-    const docRef = await addDoc(collection(db, 'images'), {
-      img: encoded,
+    await addDoc(collection(db, 'images'), {
+      src: encoded,
+      timestamp: serverTimestamp(),
     })
   }
   catch (e) {
@@ -54,7 +53,6 @@ const addTextToCanvas = async () => {
   })
 
   try {
-    console.log('update firebase doc')
     await updateDoc(document, {
       text: textModel.value,
     })
