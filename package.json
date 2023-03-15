@@ -17,6 +17,8 @@
     "emulator:export": "firebase emulators:export ./emulator-data -f"
   },
   "dependencies": {
+    "@capacitor/core": "^4.7.0",
+    "@capacitor/ios": "^4.7.0",
     "@headlessui/vue": "^1.7.10",
     "@heroicons/vue": "^2.0.16",
     "@nuxt/devalue": "^2.0.0",
@@ -38,6 +40,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.1",
+    "@capacitor/cli": "^4.7.0",
     "@iconify-json/carbon": "^1.1.13",
     "@iconify-json/ph": "^1.1.4",
     "@intlify/unplugin-vue-i18n": "^0.8.1",
