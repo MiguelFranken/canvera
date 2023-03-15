@@ -2,6 +2,7 @@ import { ViteSSG } from 'vite-ssg'
 import { setupLayouts } from 'virtual:generated-layouts'
 import Previewer from 'virtual:vue-component-preview'
 import VueKonva from 'vue-konva'
+import devalue from '@nuxt/devalue'
 import App from './App.vue'
 import type { UserModule } from './types'
 import generatedRoutes from '~pages'
@@ -22,5 +23,10 @@ export const createApp = ViteSSG(
       .forEach(i => i.install?.(ctx))
     ctx.app.use(Previewer)
     ctx.app.use(VueKonva)
+  },
+  {
+    transformState(state) {
+      return import.meta.env.SSR ? devalue(state) : state
+    },
   },
 )

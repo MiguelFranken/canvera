@@ -19,9 +19,11 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.10",
     "@heroicons/vue": "^2.0.16",
+    "@nuxt/devalue": "^2.0.0",
     "@unocss/reset": "^0.48.4",
     "@vueuse/core": "^9.11.0",
     "@vueuse/head": "^1.0.22",
+    "canvas": "^2.11.0",
     "firebase": "^9.17.1",
     "konva": "^8.4.2",
     "nprogress": "^0.2.0",

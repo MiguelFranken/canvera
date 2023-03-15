@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AuthoredGallery: typeof import('./components/collection/AuthoredGallery.vue')['default']
     Button: typeof import('./components/patterns/button/Button.vue')['default']
     ColorSelection: typeof import('./components/editor/toolbar/ColorSelection.vue')['default']
     Editor: typeof import('./components/editor/Editor.vue')['default']
@@ -14,6 +15,7 @@ declare module '@vue/runtime-core' {
     Header: typeof import('./components/patterns/layout/Header.vue')['default']
     Listbox: typeof import('./components/patterns/listbox/Listbox.vue')['default']
     README: typeof import('./components/README.md')['default']
+    ReceivedGallery: typeof import('./components/collection/ReceivedGallery.vue')['default']
     ReceiverListbox: typeof import('./components/ReceiverListbox.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

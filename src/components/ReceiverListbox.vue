@@ -17,7 +17,7 @@ const emit = defineEmits<Emits>()
 
 const db = useFirestore()
 
-const users = useCollection(collection(db, 'users'))
+const users = useCollection(collection(db, 'users'), { ssrKey: 'users-receiver' })
 
 const options = computed<IListboxOption[]>(() => users.value.map(user => ({
   id: user.uid,

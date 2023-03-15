@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { VueFire, VueFireAuth } from 'vuefire'
+import { VueFire, VueFireAuth, useSSRInitialState } from 'vuefire'
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 import { connectAuthEmulator, getAuth } from 'firebase/auth'
 import { type UserModule } from '~/types'
@@ -14,8 +14,22 @@ const firebaseConfig = {
   measurementId: 'G-B6MFK7F4YE',
 }
 
-export const install: UserModule = ({ app }) => {
+export const install: UserModule = ({ app, isClient, initialState }) => {
   const firebaseApp = initializeApp(firebaseConfig)
+
+  if (isClient) {
+    // reuse the initial state on the client
+    useSSRInitialState(initialState.vuefire, firebaseApp)
+  }
+  else {
+    // on the server we ensure all the data is retrieved in this object
+    initialState.vuefire = useSSRInitialState(
+      // let `useSSRInitialState` create the initial object for us
+      undefined,
+      // this is necessary to work with concurrent requests
+      firebaseApp,
+    )
+  }
 
   const db = getFirestore()
   connectFirestoreEmulator(db, 'localhost', 8080)
